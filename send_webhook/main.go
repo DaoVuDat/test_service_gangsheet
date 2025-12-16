@@ -455,14 +455,16 @@ func sendWebhook(ctx context.Context, client *http.Client, url string, order Sho
 }
 
 // const url = "https://dtf-api-dedicated.daovudat.site/webhooks/test/orders/create"
-const url = "http://localhost:8000/webhooks/test/orders/create"
+//const url = "http://localhost:8000/webhooks/test/orders/create"
 
-//const url = "https://dtf-api.daovudat.site/webhooks/test/orders/create"
+const url = "https://dtf-api.daovudat.site/webhooks/test/orders/create"
+
+//const url = "https://dtf-api4gb-asia.daovudat.site/webhooks/test/orders/create"
 
 func main() {
 	webhookURL := flag.String("url", url, "Webhook endpoint URL")
-	totalOrders := flag.Int("total", 1000000, "Total number of orders to send")
-	ratePerMinute := flag.Int("rate", 1000, "Number of requests per minute")
+	totalOrders := flag.Int("total", 80000, "Total number of orders to send")
+	ratePerMinute := flag.Int("rate", 2000, "Number of requests per minute")
 	_ = flag.Int("duration", 60, "Duration in minutes (0 = send all at configured rate)")
 	concurrency := flag.Int("concurrency", 10, "Number of concurrent workers")
 	flag.Parse()
