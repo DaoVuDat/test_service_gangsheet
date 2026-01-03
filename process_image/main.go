@@ -8,13 +8,12 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
-	"os"
 	"runtime/debug"
 	"sync"
 	"time"
 )
 
-const PollInterval = 5 * time.Second
+const PollInterval = 1 * time.Second
 
 func main() {
 
@@ -58,6 +57,38 @@ var processedImagesMap = map[string]string{
 	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-26-22x600.png":  "./pdf/tmp-out-ABC-26-22x600.pdf",
 	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-27-22x750.png":  "./pdf/tmp-out-ABC-27-22x750.pdf",
 	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-28-22x1000.png": "./pdf/tmp-out-ABC-28-22x1000.pdf",
+}
+
+var processedImagesMapUrl = map[string]string{
+
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-1-22x5.png":     "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-1-22x5.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-2-22x10.png":    "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-2-22x10.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-3-22x20.png":    "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-3-22x20.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-4-22x30.png":    "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-4-22x30.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-5-22x40.png":    "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-5-22x40.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-6-22x50.png":    "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-6-22x50.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-7-22x60.png":    "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-7-22x60.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-8-22x70.png":    "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-8-22x70.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-9-22x80.png":    "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-9-22x80.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-10-22x90.png":   "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-10-22x90.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-11-22x100.png":  "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-11-22x100.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-12-22x110.png":  "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-12-22x110.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-13-22x120.png":  "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-13-22x120.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-14-22x130.png":  "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-14-22x130.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-15-22x140.png":  "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-15-22x140.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-16-22x150.png":  "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-16-22x150.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-17-22x160.png":  "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-17-22x160.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-18-22x170.png":  "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-18-22x170.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-19-22x180.png":  "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-19-22x180.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-20-22x190.png":  "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-20-22x190.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-21-22x200.png":  "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-21-22x200.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-22-22x250.png":  "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-22-22x250.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-23-22x300.png":  "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-23-22x300.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-24-22x400.png":  "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-24-22x400.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-25-22x500.png":  "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-25-22x500.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-26-22x600.png":  "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-26-22x600.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-27-22x750.png":  "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-27-22x750.pdf",
+	"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-28-22x1000.png": "https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-out-ABC-28-22x1000.pdf",
 }
 
 type Response[T any] struct {
@@ -110,11 +141,13 @@ type PresignedResponse struct {
 
 //const url = "https://dtf-api-dedicated.daovudat.site"
 
-const url = "https://dtf-api.daovudat.site"
+//const url = "https://dtf-api.daovudat.site"
 
 //const url = "http://localhost:8000"
 
-const numberOfOrderToProcess = 150
+const url = "https://dtf-api-chicago.daovudat.site"
+
+const numberOfOrderToProcess = 500
 
 func worker(idx int, wg *sync.WaitGroup) {
 
@@ -252,86 +285,88 @@ func worker(idx int, wg *sync.WaitGroup) {
 				//contentType := http.DetectContentType(finalImageData)
 				//log.Printf("worker-%d: image content type: %s", idx, contentType)
 
-				finalImgFilePath, ok := processedImagesMap[product.CustomerImgUrl]
-				if !ok {
-					log.Printf("worker-%d: failed to map", idx)
-					panic(1)
-				}
-
-				// Load image from local file
-				finalImageData, err := os.ReadFile(finalImgFilePath)
-				if err != nil {
-					log.Printf("worker-%d: failed to read image from %s: %v", idx, finalImgFilePath, err)
-					return true
-				}
-				contentType := http.DetectContentType(finalImageData)
-				log.Printf("worker-%d: loaded image from %s, size: %d, content type: %s", idx, finalImgFilePath, len(finalImageData), contentType)
-
-				////////////////////////////// REQUEST PRESIGNED URL
-				// 2.3 Upload Image to R2 (POST /image/presigned)
-				log.Printf("worker-%d: uploading image: %s", idx, product.CustomerImgUrl)
-
-				presignedPayload, _ := json.Marshal(PresignedRequest{
-					Key: product.FulfillmentID,
-				})
-
-				presignedUrl := fmt.Sprintf("%s/image/presigned", url)
-
-				reqPresigned, err := http.NewRequestWithContext(
-					context.Background(),
-					"POST",
-					presignedUrl,
-					bytes.NewBuffer(presignedPayload))
-
-				if err != nil {
-					log.Printf("worker-%d: failed to create presigned request: %v", idx, err)
-					return true
-				}
-				reqPresigned.Header.Set("Authorization", "Bearer "+accessToken)
-				respPresigned, err := http.DefaultClient.Do(reqPresigned)
-				if err != nil {
-					log.Printf("worker-%d: failed to get presigned url: %v", idx, err)
-					return true
-				}
-
-				var presignedResp Response[PresignedResponse]
-				if err := json.NewDecoder(respPresigned.Body).Decode(&presignedResp); err != nil {
-					log.Printf("worker-%d: failed to decode presigned response: %v", idx, err)
-					return true
-				}
-
-				respPresigned.Body.Close()
-
-				log.Printf("worker-%d: presigned url: %s, download url: %s", idx, presignedResp.Data.URL, presignedResp.Data.DownloadURL)
-
-				reqUpload, err := http.NewRequestWithContext(
-					context.Background(),
-					"PUT",
-					presignedResp.Data.URL,
-					bytes.NewBuffer(finalImageData))
-				if err != nil {
-					log.Printf("worker-%d: failed to create upload request: %v", idx, err)
-					return true
-				}
-
-				reqUpload.Header.Set("Content-Type", contentType)
-				respUpload, err := http.DefaultClient.Do(reqUpload)
-				if err != nil {
-					log.Printf("worker-%d: failed to upload image: %v", idx, err)
-					return true
-				}
-
-				if respUpload.StatusCode != 200 {
-					log.Printf("worker-%d: failed to upload image: %v", idx, respUpload.Status)
-					return true
-				}
-				respUpload.Body.Close()
+				//finalImgFilePath, ok := processedImagesMap[product.CustomerImgUrl]
+				//if !ok {
+				//	log.Printf("worker-%d: failed to map", idx)
+				//	panic(1)
+				//}
+				//
+				//// Load image from local file
+				//finalImageData, err := os.ReadFile(finalImgFilePath)
+				//if err != nil {
+				//	log.Printf("worker-%d: failed to read image from %s: %v", idx, finalImgFilePath, err)
+				//	return true
+				//}
+				//contentType := http.DetectContentType(finalImageData)
+				//log.Printf("worker-%d: loaded image from %s, size: %d, content type: %s", idx, finalImgFilePath, len(finalImageData), contentType)
+				//
+				//////////////////////////////// REQUEST PRESIGNED URL
+				//// 2.3 Upload Image to R2 (POST /image/presigned)
+				//log.Printf("worker-%d: uploading image: %s", idx, product.CustomerImgUrl)
+				//
+				//presignedPayload, _ := json.Marshal(PresignedRequest{
+				//	Key: product.FulfillmentID,
+				//})
+				//
+				//presignedUrl := fmt.Sprintf("%s/image/presigned", url)
+				//
+				//reqPresigned, err := http.NewRequestWithContext(
+				//	context.Background(),
+				//	"POST",
+				//	presignedUrl,
+				//	bytes.NewBuffer(presignedPayload))
+				//
+				//if err != nil {
+				//	log.Printf("worker-%d: failed to create presigned request: %v", idx, err)
+				//	return true
+				//}
+				//reqPresigned.Header.Set("Authorization", "Bearer "+accessToken)
+				//respPresigned, err := http.DefaultClient.Do(reqPresigned)
+				//if err != nil {
+				//	log.Printf("worker-%d: failed to get presigned url: %v", idx, err)
+				//	return true
+				//}
+				//
+				//var presignedResp Response[PresignedResponse]
+				//if err := json.NewDecoder(respPresigned.Body).Decode(&presignedResp); err != nil {
+				//	log.Printf("worker-%d: failed to decode presigned response: %v", idx, err)
+				//	return true
+				//}
+				//
+				//respPresigned.Body.Close()
+				//
+				//log.Printf("worker-%d: presigned url: %s, download url: %s", idx, presignedResp.Data.URL, presignedResp.Data.DownloadURL)
+				//
+				//reqUpload, err := http.NewRequestWithContext(
+				//	context.Background(),
+				//	"PUT",
+				//	presignedResp.Data.URL,
+				//	bytes.NewBuffer(finalImageData))
+				//if err != nil {
+				//	log.Printf("worker-%d: failed to create upload request: %v", idx, err)
+				//	return true
+				//}
+				//
+				//reqUpload.Header.Set("Content-Type", contentType)
+				//respUpload, err := http.DefaultClient.Do(reqUpload)
+				//if err != nil {
+				//	log.Printf("worker-%d: failed to upload image: %v", idx, err)
+				//	return true
+				//}
+				//
+				//if respUpload.StatusCode != 200 {
+				//	log.Printf("worker-%d: failed to upload image: %v", idx, respUpload.Status)
+				//	return true
+				//}
+				//respUpload.Body.Close()
 				////////////////////////////////////////////////////////////////
 
 				//2.4 Process Order Product (POST /orders/{order_id}/products/{order_product_fulfillment_id})
+				// Skip presigned
+				finalImgFilePath, _ := processedImagesMapUrl[product.CustomerImgUrl]
 
 				processOrderProductPayload, _ := json.Marshal(ProcessOrderProductRequest{
-					FinalImgUrl: presignedResp.Data.DownloadURL,
+					FinalImgUrl: finalImgFilePath,
 				})
 
 				//finalImgUrl, ok := processedImagesMap[product.CustomerImgUrl]

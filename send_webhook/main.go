@@ -11,6 +11,8 @@ import (
 	"math/rand"
 	"net/http"
 
+	"github.com/google/uuid"
+
 	"sync"
 	"sync/atomic"
 	"time"
@@ -138,46 +140,46 @@ type ShopifyOrder struct {
 
 var (
 	printReadyFiles = []string{
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-1-22x5.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-2-22x10.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-3-22x20.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-4-22x30.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-5-22x40.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-6-22x50.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-7-22x60.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-8-22x70.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-9-22x80.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-10-22x90.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-11-22x100.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-12-22x110.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-13-22x120.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-14-22x130.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-15-22x140.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-16-22x150.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-17-22x160.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-18-22x170.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-19-22x180.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-20-22x190.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-21-22x200.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-22-22x250.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-23-22x300.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-24-22x400.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-25-22x500.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-26-22x600.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-27-22x750.png",
-		"https://pub-ac878ecfb32d4fabac12c91472c4714a.r2.dev/samples/tmp-img-ABC-28-22x1000.png",
+		//"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-1-22x5.png",
+		//"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-2-22x10.png",
+		//"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-3-22x20.png",
+		//"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-4-22x30.png",
+		//"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-5-22x40.png",
+		//"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-6-22x50.png",
+		//"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-7-22x60.png",
+		//"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-8-22x70.png",
+		//"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-9-22x80.png",
+		//"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-10-22x90.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-11-22x100.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-12-22x110.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-13-22x120.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-14-22x130.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-15-22x140.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-16-22x150.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-17-22x160.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-18-22x170.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-19-22x180.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-20-22x190.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-21-22x200.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-22-22x250.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-23-22x300.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-24-22x400.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-25-22x500.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-26-22x600.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-27-22x750.png",
+		"https://dtfgangsheetbk.daovudat.site/samples/tmp-img-ABC-28-22x1000.png",
 	}
 	variants = []string{
-		"22x5",
-		"22x10",
-		"22x20",
-		"22x30",
-		"22x40",
-		"22x50",
-		"22x60",
-		"22x70",
-		"22x80",
-		"22x90",
+		//"22x5",
+		//"22x10",
+		//"22x20",
+		//"22x30",
+		//"22x40",
+		//"22x50",
+		//"22x60",
+		//"22x70",
+		//"22x80",
+		//"22x90",
 		"22x100",
 		"22x110",
 		"22x120",
@@ -240,9 +242,13 @@ type Stats struct {
 	SuccessRequests int64
 	FailedRequests  int64
 	TotalDuration   int64 // in milliseconds
+	// Request type counters
+	Type1Count int64 // File Upload with Shopify CDN URL
+	Type2Count int64 // File Upload with invalid value
+	Type3Count int64 // Print Ready File
 }
 
-func generateOrder(orderID int64, timestamp time.Time) ShopifyOrder {
+func generateOrder(orderID int64, stats *Stats) ShopifyOrder {
 	firstNameIdx := rand.Intn(len(firstNames))
 	lastNameIdx := rand.Intn(len(lastNames))
 	cityIdx := rand.Intn(len(cityData))
@@ -251,7 +257,8 @@ func generateOrder(orderID int64, timestamp time.Time) ShopifyOrder {
 	lastName := lastNames[lastNameIdx]
 	email := fmt.Sprintf("%s.%s%d@example.com", firstName, lastName, orderID)
 
-	price := fmt.Sprintf("%.2f", 10.0+rand.Float64()*90.0)
+	// Keep total between $13-$17 by constraining item price to $8.10-$12.10 plus $4.90 shipping.
+	price := fmt.Sprintf("%.2f", 8.10+rand.Float64()*4.0)
 	shippingPrice := "4.90"
 	subtotal := price
 	totalPrice := fmt.Sprintf("%.2f", mustParseFloat(price)+mustParseFloat(shippingPrice))
@@ -263,31 +270,51 @@ func generateOrder(orderID int64, timestamp time.Time) ShopifyOrder {
 	vendor := "DTFsheet and custom shirts"
 
 	// random the number of line items
-	numLineItems := rand.Intn(5) + 1
+	numLineItems := rand.Intn(2) + 1
 
 	lineItems := make([]LineItem, numLineItems)
-	for i := 0; i < numLineItems; i++ {
-		// random quantity
-		quantity := rand.Intn(10) + 1
-		randLineItem := rand.Intn(len(printReadyFiles))
-		lineItems[i] = LineItem{
-			ID:                  15573094760617 + orderID + int64(i),
-			AdminID:             fmt.Sprintf("gid://shopify/LineItem/%d", 15573094760617+orderID+int64(i)),
-			CurrentQuantity:     1,
-			FulfillableQuantity: 1,
-			ProductID:           &productID,
-			Title:               "DTF GANG SHEET BUILDER",
-			Name:                fmt.Sprintf("DTF Gangsheet %s", variants[randLineItem]),
-			VariantTitle:        &variants[randLineItem],
-			Price:               price,
-			Quantity:            quantity,
-			Vendor:              &vendor,
-			PriceSet: PriceSet{
-				ShopMoney:        Money{Amount: price, CurrencyCode: "USD"},
-				PresentmentMoney: Money{Amount: price, CurrencyCode: "USD"},
-			},
-			Grams: 0,
-			Properties: []Property{
+
+	if rand.Float64() <= 0.5 {
+
+		for i := 0; i < numLineItems; i++ {
+			quantity := rand.Intn(10) + 1
+			randLineItem := rand.Intn(len(printReadyFiles))
+			var properties []Property
+			properties = []Property{
+				{Name: "File Upload", Value: "https://cdn.shopify.com-uploadly.com/?ph_image=e10303d2-3ac9-43b7-8862-441a7b7e7a6e&ph_name=2_1_4_2_9_2_0_8_1___2_9_7_0_1_2_3_2_2_9_9_3_4_9_8_6___1_5_0_9_6_6_8_4_5_5_2_8_0_9_7_0_9_0_7___n&crop=&extension=j=p=e=g&live=true"},
+			}
+
+			lineItems[i] = LineItem{
+				ID:                  15573094760617 + orderID + 1,
+				AdminID:             fmt.Sprintf("gid://shopify/LineItem/%d", 15573094760617+orderID+int64(i)),
+				CurrentQuantity:     1,
+				FulfillableQuantity: 1,
+				ProductID:           &productID,
+				Title:               "DTF GANG SHEET BUILDER",
+				Name:                fmt.Sprintf("DTF Gangsheet %s", variants[randLineItem]),
+				VariantTitle:        &variants[randLineItem],
+				Price:               price,
+				Quantity:            quantity,
+				Vendor:              &vendor,
+				PriceSet: PriceSet{
+					ShopMoney:        Money{Amount: price, CurrencyCode: "USD"},
+					PresentmentMoney: Money{Amount: price, CurrencyCode: "USD"},
+				},
+				Grams:      0,
+				Properties: properties,
+			}
+		}
+
+	} else {
+		atomic.AddInt64(&stats.Type3Count, 1)
+		for i := 0; i < numLineItems; i++ {
+			// random quantity
+			quantity := rand.Intn(10) + 1
+			randLineItem := rand.Intn(len(printReadyFiles))
+
+			var properties []Property
+
+			properties = []Property{
 				{Name: "Preview", Value: "https://app.dripappsserver.com/preview/fcc2f5fe-551c-40d0-bcd6-562e4ec6575d.png"},
 				{Name: "Edit", Value: "https://app.dripappsserver.com/builder/edit?design_id=fcc2f5fe-551c-40d0-bcd6-562e4ec6575d"},
 				{Name: "_Admin Edit", Value: "https://app.dripappsserver.com/builder/edit?design_id=fcc2f5fe-551c-40d0-bcd6-562e4ec6575d&token=3NFkVDViB0WAAOlARn7W"},
@@ -295,7 +322,27 @@ func generateOrder(orderID int64, timestamp time.Time) ShopifyOrder {
 				{Name: "_Actual Height", Value: "3.76 in"},
 				{Name: "Additional Note", Value: fmt.Sprintf("Test Order %d", orderID)},
 				{Name: "Background Removal", Value: "No"},
-			},
+			}
+
+			lineItems[i] = LineItem{
+				ID:                  15573094760617 + orderID + int64(i),
+				AdminID:             fmt.Sprintf("gid://shopify/LineItem/%d", 15573094760617+orderID+int64(i)),
+				CurrentQuantity:     1,
+				FulfillableQuantity: 1,
+				ProductID:           &productID,
+				Title:               "DTF GANG SHEET BUILDER",
+				Name:                fmt.Sprintf("DTF Gangsheet %s", variants[randLineItem]),
+				VariantTitle:        &variants[randLineItem],
+				Price:               price,
+				Quantity:            quantity,
+				Vendor:              &vendor,
+				PriceSet: PriceSet{
+					ShopMoney:        Money{Amount: price, CurrencyCode: "USD"},
+					PresentmentMoney: Money{Amount: price, CurrencyCode: "USD"},
+				},
+				Grams:      0,
+				Properties: properties,
+			}
 		}
 	}
 
@@ -306,9 +353,9 @@ func generateOrder(orderID int64, timestamp time.Time) ShopifyOrder {
 
 	return ShopifyOrder{
 		ID:                6574664908969 + orderID, // fmt.Sprintf("657466490896%d", orderID),
-		AdminGraphqlAPIID: fmt.Sprintf("gid://shopify/Order/%d", 6574664908969+orderID),
+		AdminGraphqlAPIID: fmt.Sprintf("gid://shopify/Order/%s", uuid.NewString()),
 		ContactEmail:      email,
-		CreatedAt:         timestamp.Format(time.RFC3339),
+		CreatedAt:         time.Now().Format(time.RFC3339),
 		Currency:          "USD",
 		CurrentTotalPrice: totalPrice,
 		CurrentTotalPriceSet: PriceSet{
@@ -455,16 +502,18 @@ func sendWebhook(ctx context.Context, client *http.Client, url string, order Sho
 }
 
 // const url = "https://dtf-api-dedicated.daovudat.site/webhooks/test/orders/create"
-//const url = "http://localhost:8000/webhooks/test/orders/create"
+// const url = "http://localhost:8000/webhooks/test/orders/create"
 
-const url = "https://dtf-api.daovudat.site/webhooks/test/orders/create"
+//const url = "https://dtf-api.daovudat.site/webhooks/test/orders/create"
 
 //const url = "https://dtf-api4gb-asia.daovudat.site/webhooks/test/orders/create"
 
+const url = "https://bgs.daovudat.site/webhooks/test/orders/create"
+
 func main() {
 	webhookURL := flag.String("url", url, "Webhook endpoint URL")
-	totalOrders := flag.Int("total", 80000, "Total number of orders to send")
-	ratePerMinute := flag.Int("rate", 2000, "Number of requests per minute")
+	totalOrders := flag.Int("total", 100, "Total number of orders to send")
+	ratePerMinute := flag.Int("rate", 100, "Number of requests per minute")
 	_ = flag.Int("duration", 60, "Duration in minutes (0 = send all at configured rate)")
 	concurrency := flag.Int("concurrency", 10, "Number of concurrent workers")
 	flag.Parse()
@@ -503,9 +552,8 @@ func main() {
 		go func(workerID int) {
 			defer wg.Done()
 			for orderID := range orderChan {
-				seconds := rand.Int63n(60 * 24 * 60 * 60)
-				timestamp := time.Now().Add(-time.Duration(seconds) * time.Second)
-				order := generateOrder(orderID, timestamp)
+
+				order := generateOrder(orderID, stats)
 
 				err := sendWebhook(ctx, client, *webhookURL, order, stats)
 				atomic.AddInt64(&stats.TotalRequests, 1)
@@ -553,8 +601,12 @@ func main() {
 			elapsed := time.Since(startTime)
 			rps := float64(total) / elapsed.Seconds()
 
-			log.Printf("Stats: Total=%d, Success=%d, Failed=%d, RPS=%.2f, AvgLatency=%dms",
-				total, success, failed, rps, avgLatency)
+			type1 := atomic.LoadInt64(&stats.Type1Count)
+			type2 := atomic.LoadInt64(&stats.Type2Count)
+			type3 := atomic.LoadInt64(&stats.Type3Count)
+
+			log.Printf("Stats: Total=%d, Success=%d, Failed=%d, RPS=%.2f, AvgLatency=%dms | Type1=%d, Type2=%d, Type3=%d",
+				total, success, failed, rps, avgLatency, type1, type2, type3)
 		}
 	}()
 
@@ -572,6 +624,10 @@ func main() {
 		avgLatency = totalDur / total
 	}
 
+	type1 := atomic.LoadInt64(&stats.Type1Count)
+	type2 := atomic.LoadInt64(&stats.Type2Count)
+	type3 := atomic.LoadInt64(&stats.Type3Count)
+
 	log.Printf("\n=== Final Results ===")
 	log.Printf("Total Time: %v", elapsed)
 	log.Printf("Total Requests: %d", total)
@@ -580,4 +636,7 @@ func main() {
 	log.Printf("Success Rate: %.2f%%", float64(success)/float64(total)*100)
 	log.Printf("Average RPS: %.2f", float64(total)/elapsed.Seconds())
 	log.Printf("Average Latency: %dms", avgLatency)
+	log.Printf("Type1 (Shopify CDN): %d", type1)
+	log.Printf("Type2 (Invalid Upload): %d", type2)
+	log.Printf("Type3 (Print Ready): %d", type3)
 }
